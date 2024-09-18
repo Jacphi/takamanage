@@ -116,3 +116,86 @@ exports.isAdmin = (req, res, next) => {
       next(err);
     });
 };
+
+exports.addMember = (req, res, next) => {
+  const projectId = req.body.project;
+
+  Project.findById(projectId)
+    .then((project) => {
+      if (req.userId !== project.admin.toString()) {
+        const error = new Error("Not authorized");
+        error.statusCode = 403;
+        throw error;
+      }
+
+      const userToAdd = req.body.userToAdd;
+
+      return User.findOne({ email: userToAdd });
+    })
+
+    .then((user) => {
+      if (user.projects && user.projects.includes(projectId)) {
+        const error = new Error("Already member");
+        error.statusCode = 403;
+        throw error;
+      }
+
+      user.projects.push(projectId);
+      return user.save();
+    })
+    .then((result) => {
+      console.log("Member added");
+      res.status(200).json({
+        message: "Member added",
+        // project: project,
+        // admin: { _id: admin._id, name: admin.email },
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.revokeMember = (req, res, next) => {
+  const projectId = req.body.project;
+
+  Project.findById(projectId)
+    .then((project) => {
+      if (req.userId !== project.admin.toString()) {
+        const error = new Error("Not authorized");
+        error.statusCode = 403;
+        throw error;
+      }
+
+      const userToRevoke = req.body.userToRevoke;
+      return User.findById(userToRevoke);
+    })
+    .then((user) => {
+      if (!user.projects || !user.projects.includes(projectId)) {
+        const error = new Error("Not member");
+        error.statusCode = 403;
+        throw error;
+      }
+
+      const remainProjects = user.projects.filter((id) => {
+        id !== projectId;
+      });
+      user.projects = remainProjects;
+      return user.save();
+    })
+    .then((result) => {
+      console.log("Member revoked");
+      res.status(200).json({
+        message: "Member revoked",
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
