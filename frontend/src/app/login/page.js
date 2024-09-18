@@ -66,6 +66,7 @@ export default function LoginForm() {
 
   return (
     <section className="min-h-screen flex items-center justify-center flex-col">
+      <h1 className="text-white text-5xl p-12 font-bold "> TAKAMANAGE </h1>
       <span className="flex justify-between max-w-sm w-full my-4">
         <button
           type="button"
