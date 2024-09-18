@@ -23,7 +23,9 @@ export default function SingleTask({ params }) {
       };
 
       axios
-        .get(`http://localhost:5000/tasks/${params.id}`, { headers })
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/tasks/${params.id}`, {
+          headers,
+        })
         .then((response) => {
           setTask(response.data.task);
         })

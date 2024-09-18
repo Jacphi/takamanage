@@ -47,7 +47,7 @@ export default function SignUpForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/auth/signup",
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
         formData,
         { headers }
       );

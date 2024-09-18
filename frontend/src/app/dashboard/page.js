@@ -25,7 +25,7 @@ export default function Dashboard() {
       };
 
       axios
-        .get("http://localhost:5000/auth/my-projects", { headers })
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/auth/my-projects`, { headers })
         .then((response) => {
           setProjects(response.data.projects);
         })
@@ -61,12 +61,12 @@ export default function Dashboard() {
         </button>
       </span>
 
-      {projects && projects.length ? (
-        <div className="bg-white p-8 rounded-lg shadow-lg max-w-5xl w-full">
-          <h2 className="text-2xl font-bold mb-6 text-center text-black">
-            Dashboard
-          </h2>
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-5xl w-full">
+        <h2 className="text-2xl font-bold mb-6 text-center text-black">
+          Dashboard
+        </h2>
 
+        {projects && projects.length ? (
           <ul className="list-none">
             {projects.map((project) => {
               return (
@@ -81,10 +81,10 @@ export default function Dashboard() {
               );
             })}
           </ul>
-        </div>
-      ) : (
-        <div>No projects</div>
-      )}
+        ) : (
+          <div className="font-bold text-center text-xl">No projects</div>
+        )}
+      </div>
     </div>
   );
 }

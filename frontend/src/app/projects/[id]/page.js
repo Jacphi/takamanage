@@ -25,7 +25,9 @@ export default function SingleProject({ params }) {
       };
 
       axios
-        .get(`http://localhost:5000/projects/${params.id}`, { headers })
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/projects/${params.id}`, {
+          headers,
+        })
         .then((response) => {
           setProject(response.data.project);
         })
