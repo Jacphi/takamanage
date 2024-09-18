@@ -199,3 +199,39 @@ exports.revokeMember = (req, res, next) => {
       next(err);
     });
 };
+
+exports.getAdminProjects = (req, res, next) => {
+  const userId = req.userId;
+  Project.find({ admin: userId })
+    .then((projects) => {
+      res.status(200).json({
+        projects: projects,
+        message: "User is admin of these projects",
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.getTasks = (req, res, next) => {
+  const projectId = req.params.id;
+
+  Task.find({ project: projectId })
+    .then((tasks) => {
+      console.log("Project tasks");
+      res.status(200).json({
+        message: "Project tasks",
+        tasks: tasks,
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
