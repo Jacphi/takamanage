@@ -1,10 +1,16 @@
 const express = require("express");
+require("dotenv").config();
 const app = express();
 const bodyParser = require("body-parser");
 
 const port = 5000;
 
 const mongoose = require("mongoose");
+
+const usersRoutes = require("./routes/auth");
+const projectsRoutes = require("./routes/project");
+const tasksRoutes = require("./routes/task");
+
 
 app.use(bodyParser.json());
 
@@ -18,6 +24,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/auth", usersRoutes);
+app.use("/projects", projectsRoutes);
+app.use("/tasks", tasksRoutes);
+
 app.use((error, req, res, next) => {
   console.log(error);
   const status = error.statusCode || 500;
@@ -27,9 +37,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(
-    "mongodb+srv://jnoukpo:GhPVrlJCV1ZU8ton@cluster0.fszux.mongodb.net/takamanage?retryWrites=true&w=majority&appName=Cluster0"
-  )
+  .connect(process.env.MONGO_URI)
   .then((result) => {
     app.listen(port, () => {
       console.log(`Listening on port ${port}`);
