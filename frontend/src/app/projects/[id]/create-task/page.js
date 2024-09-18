@@ -4,7 +4,7 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 
-export default function NewProject() {
+export default function NewTask({ params }) {
   const router = useRouter();
   const [takadata, setData] = useState("");
 
@@ -20,6 +20,8 @@ export default function NewProject() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    priority: "",
+    project: params.id,
   });
 
   const [loading, setLoading] = useState(false);
@@ -46,14 +48,14 @@ export default function NewProject() {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/projects/create`,
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/create`,
         formData,
         { headers }
       );
       // Success
-      setSuccess("Project created !");
+      setSuccess("Task created !");
 
-      router.push("/dashboard");
+      router.push(`/projects/${params.id}`);
     } catch (error) {
       // Handle errors
       setError("Error. Try again");
@@ -77,16 +79,16 @@ export default function NewProject() {
       </span>
       <main className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h2 className="text-2xl font-bold mb-6 text-center text-black">
-          Create new project
+          Create new task
         </h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         {success && (
           <p className="text-green-500 text-center mb-4">{success}</p>
         )}
         <form onSubmit={handleSubmit} className="text-black">
-          <span className="mb-4">
+          <div className="mb-4">
             <label htmlFor="name" className="block text-gray-700">
-              Project name
+              Task name
             </label>
             <input
               type="text"
@@ -97,11 +99,11 @@ export default function NewProject() {
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               required
             />
-          </span>
+          </div>
 
           <div className="mb-4">
             <label htmlFor="description" className="block text-gray-700">
-              Project description
+              Task description
             </label>
             <textarea
               id="description"
@@ -111,6 +113,21 @@ export default function NewProject() {
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               required
             ></textarea>
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="priority" className="block text-gray-700">
+              Task Priority
+            </label>
+            <input
+              type="text"
+              id="priority"
+              name="priority"
+              value={formData.priority}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              required
+            />
           </div>
 
           <button

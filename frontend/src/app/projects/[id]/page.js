@@ -9,6 +9,7 @@ export default function SingleProject({ params }) {
   const [takadata, setData] = useState("");
   const [project, setProject] = useState("");
   const [tasks, setTasks] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     let value = JSON.parse(localStorage.getItem("takadata")) || "";
@@ -43,11 +44,54 @@ export default function SingleProject({ params }) {
         .catch((error) => {
           console.log(error);
         });
+
+      axios
+        .post(
+          `http://localhost:5000/projects/is-admin`,
+          { project: params.id },
+          { headers }
+        )
+        .then((response) => {
+          setIsAdmin(response.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, []);
 
   return project ? (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center flex-col">
+      <span className="flex justify-between max-w-5xl w-full my-4">
+        <button
+          type="button"
+          className="bg-blue-500 p-2 rounded-md hover:bg-blue-600 font-bold"
+          onClick={() => router.push("/dashboard")}
+        >
+          Dashboard
+        </button>
+
+        {isAdmin && (
+          <button
+            type="button"
+            className="bg-blue-500 p-2 rounded-md hover:bg-blue-600 font-bold"
+            onClick={() => router.push(`/projects/${project._id}/create-task`)}
+          >
+            Add task
+          </button>
+        )}
+
+        {isAdmin && (
+          <button
+            type="button"
+            className="bg-blue-500 p-2 rounded-md hover:bg-blue-600 font-bold"
+            onClick={() => router.push("/dashboard")}
+          >
+            Add member
+          </button>
+        )}
+      </span>
+
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-5xl w-full">
         <h2 className="text-2xl font-bold mb-6 text-center text-black">
           {project.name}
