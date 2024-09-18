@@ -18,6 +18,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((error, req, res, next) => {
+  console.log(error);
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({ message: message, data });
+});
+
 mongoose
   .connect(
     "mongodb+srv://jnoukpo:GhPVrlJCV1ZU8ton@cluster0.fszux.mongodb.net/takamanage?retryWrites=true&w=majority&appName=Cluster0"
