@@ -4,7 +4,7 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 
-export default function SignUpForm() {
+export default function LoginForm() {
   const router = useRouter();
   const [takadata, setData] = useState("");
 
@@ -47,17 +47,17 @@ export default function SignUpForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/auth/signup",
+        "http://localhost:5000/auth/login",
         formData,
         { headers }
       );
       // Success
-      setSuccess("Registered successfully !");
+      setSuccess("Connected !");
       localStorage.setItem("takadata", JSON.stringify(response.data));
       setData(JSON.stringify(response.data));
     } catch (error) {
       // Handle errors
-      setError("Error. Try again");
+      setError("Error. Try again.");
       console.error("Error:", error);
     } finally {
       setLoading(false);
@@ -69,16 +69,16 @@ export default function SignUpForm() {
       <span className="flex justify-between max-w-sm w-full my-4">
         <button
           type="button"
-          disabled
-          className="bg-blue-500 p-2 rounded-md font-bold"
+          className="bg-blue-500 p-2 rounded-md hover:bg-blue-600 font-bold"
+          onClick={() => router.push("/")}
         >
           Sign Up
         </button>
 
         <button
-          className="bg-blue-500 p-2 rounded-md hover:bg-blue-600 font-bold"
+          className="bg-blue-500 p-2 rounded-md font-bold"
           type="button"
-          onClick={() => router.push("/login")}
+          disabled
         >
           {" "}
           Log in{" "}
@@ -86,43 +86,13 @@ export default function SignUpForm() {
       </span>
       <main className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h2 className="text-2xl font-bold mb-6 text-center text-black">
-          Registration
+          Log in
         </h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         {success && (
           <p className="text-green-500 text-center mb-4">{success}</p>
         )}
         <form onSubmit={handleSubmit} className="text-black">
-          <span className="mb-4">
-            <label htmlFor="firstName" className="block text-gray-700">
-              First name
-            </label>
-            <input
-              type="text"
-              id="firstName"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
-          </span>
-
-          <div className="mb-4">
-            <label htmlFor="lastName" className="block text-gray-700">
-              Last name
-            </label>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700">
               Email
@@ -160,7 +130,7 @@ export default function SignUpForm() {
             } transition duration-300`}
             disabled={loading}
           >
-            {loading ? "Processing..." : "Register"}
+            {loading ? "Processing..." : "Log in"}
           </button>
         </form>
       </main>
