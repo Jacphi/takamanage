@@ -19,8 +19,8 @@ router.get("/:id", isAuth, projectsController.getProject);
 
 router.post("/create", isAuth, projectsController.addProject);
 
-router.put("/:id", projectsController.editProject);
-router.delete("/:id", isAuth, projectsController.deleteProject);
+// router.put("/:id", projectsController.editProject);
+// router.delete("/:id", isAuth, projectsController.deleteProject);
 
 router.post("/add-member", isAuth, projectsController.addMember);
 router.post("/revoke-member", isAuth, projectsController.revokeMember);
