@@ -37,7 +37,9 @@ export default function SingleProject({ params }) {
         });
 
       axios
-        .get(`http://localhost:5000/projects/${params.id}/tasks`, { headers })
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/projects/${params.id}/tasks`, {
+          headers,
+        })
         .then((response) => {
           setTasks(response.data.tasks);
         })
@@ -47,7 +49,7 @@ export default function SingleProject({ params }) {
 
       axios
         .post(
-          `http://localhost:5000/projects/is-admin`,
+          `${process.env.NEXT_PUBLIC_API_URL}/projects/is-admin`,
           { project: params.id },
           { headers }
         )
@@ -59,6 +61,31 @@ export default function SingleProject({ params }) {
         });
     }
   }, []);
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${takadata.token}`,
+  };
+
+  const handleDelete = async (toDelete) => {
+    // setLoading(true);
+    // setError(null);
+    // setSuccess(null);
+
+    try {
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/${toDelete}`,
+        {
+          headers,
+        }
+      );
+
+      // router.push(`/projects/${params.id}`);
+      location.reload();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return project ? (
     <div className="min-h-screen flex items-center justify-center flex-col">
@@ -120,11 +147,23 @@ export default function SingleProject({ params }) {
               return (
                 <li
                   key={task._id}
-                  className="shadow-gray-400 shadow-md p-5 rounded-md my-4 hover:bg-blue-300 hover:shadow cursor-pointer"
-                  onClick={() => router.push(`/tasks/${task._id}`)}
+                  className="flex justify-between shadow-gray-400 shadow-md p-5 rounded-md my-4 hover:bg-blue-300 hover:shadow"
                 >
                   {" "}
-                  <button>{task.name}</button>{" "}
+                  <button
+                    className="font-bold underline"
+                    onClick={() => router.push(`/tasks/${task._id}`)}
+                  >
+                    {task.name}
+                  </button>
+                  {isAdmin && (
+                    <button
+                      onClick={() => handleDelete(task._id)}
+                      className="bg-red-500 p-2 rounded-lg font-bold text-white shadow-lg hover:shadow-none hover:font-medium"
+                    >
+                      DELETE
+                    </button>
+                  )}
                 </li>
               );
             })}

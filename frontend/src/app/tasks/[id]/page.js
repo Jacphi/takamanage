@@ -35,18 +35,18 @@ export default function SingleTask({ params }) {
           console.log(error);
         });
 
-      axios
-        .post(
-          `http://localhost:5000/projects/is-admin`,
-          { project: params.id },
-          { headers }
-        )
-        .then((response) => {
-          setIsAdmin(response.data.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // axios
+      //   .post(
+      //     `${process.env.NEXT_PUBLIC_API_URL}/projects/is-admin`,
+      //     { project: params.id },
+      //     { headers }
+      //   )
+      //   .then((response) => {
+      //     setIsAdmin(response.data.data);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     }
   }, []);
 
@@ -61,7 +61,7 @@ export default function SingleTask({ params }) {
           Dashboard
         </button>
 
-        {isAdmin && (
+        {/* {isAdmin && (
           <button
             type="button"
             className="bg-blue-500 p-2 rounded-md hover:bg-blue-600 font-bold"
@@ -69,9 +69,9 @@ export default function SingleTask({ params }) {
           >
             Add task
           </button>
-        )}
+        )} */}
 
-        {isAdmin && (
+        {/* {isAdmin && (
           <button
             type="button"
             className="bg-blue-500 p-2 rounded-md hover:bg-blue-600 font-bold"
@@ -79,7 +79,7 @@ export default function SingleTask({ params }) {
           >
             Add member
           </button>
-        )}
+        )} */}
       </span>
 
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-5xl w-full">
