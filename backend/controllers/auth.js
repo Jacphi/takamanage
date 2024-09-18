@@ -90,3 +90,26 @@ exports.login = (req, res, next) => {
       next(err);
     });
 };
+
+
+exports.getProjects = (req, res, next) => {
+  const userId = req.userId;
+  User.findById(userId)
+    .populate("projects")
+    .then((user) => {
+      return user.projects;
+    })
+    .then((projects) => {
+      console.log("Projects");
+      res.status(200).json({
+        projects: projects,
+        message: "User is member of these projects",
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
