@@ -42,8 +42,8 @@ npm install
 - Create a .env file with the following configuration:
 ```
 PORT=5000
-MONGO_URI=your_mongo_uri(or this : mongodb+srv://jnoukpo:GhPVrlJCV1ZU8ton@cluster0.fszux.mongodb.net/takamanage?retryWrites=true&w=majority&appName=Cluster0)
-JWT_SECRET=your_jwt_secret(or this : secretkey)
+MONGO_URI=your_mongo_uri
+JWT_SECRET=your_jwt_secret
 ```
 - Start the backend server:
 ```bash
@@ -101,7 +101,7 @@ npm run dev
 npm start
 ```
 
-#### Fronten (Next.js)
+#### Frontend (Next.js)
 - Set up env variable in the .env.local file
 - Run
 ```bash
